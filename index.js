@@ -118,18 +118,19 @@
     // console.log("\n\n________________\nfile=%s", fullRelPath);
       for (var i = 0; i < opts.ignoreMatchingUrls.length; i++) {
         var regExp = new RegExp(opts.ignoreMatchingUrls[i]);
-         if (!regExp.test(fullRelPath)) {
+        if (regExp.test(fullRelPath)) {
 
-           fancyLog("\t"+chalk.cyan("Add Hash")+": \""+ chalk.magenta(fullRelPath)+"\"");
-          return urlHash;
-         } else {
-
+            // tested url is part of the ignore-list. do not add hash and end calculation.
             fancyLog("\tIgnore Match: \"" + chalk.magenta(fullRelPath) + "\" (regexp: "+ opts.ignoreMatchingUrls[i] +")");
-          return null;
+            return null;
+
          }
       }
 
-    return null;
+      fancyLog("\t"+chalk.cyan("Add Hash")+": \""+ chalk.magenta(fullRelPath)+"\"");
+      // console.log("######### - fullRelPath=%s, ignoreThisUrl=%s, Adding?=%s ",fullRelPath,opts.ignoreMatchingUrls[i],regExp.test(fullRelPath));
+      // only return urlHash, if the whole list has been processed.
+      return urlHash;
   }
   /**
   * Process each line, which matches the template-regex and href-regex
